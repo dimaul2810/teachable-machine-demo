@@ -60,10 +60,22 @@
 
     async function predict() {
       const prediction = await model.predict(webcam.canvas);
+
+      let highestProb = 0;
+      let highestClass = "";
+
       for(let i = 0; i < maxPredictions; i++) {
         const classPrediction = `${prediction[i].className}: ${(prediction[i].probability * 100).toFixed(2)}%`;
         labelContainer.childNodes[i].innerHTML = classPrediction;
+
+        if (prediction[i].probability > highestProb) {
+          highestProb = prediction[i].probability;
+          highestClass = prediction[i].className;
+        }
       }
+
+      // Kirim kelas dengan probabilitas tertinggi ke MIT App Inventor lewat WebViewString
+      window.WebViewString = highestClass;
     }
   </script>
 </body>
