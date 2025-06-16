@@ -45,13 +45,19 @@
             window.requestAnimationFrame(loop);
         }
 
-        async function predict() {
-            const prediction = await model.predict(webcam.canvas);
-            for (let i = 0; i < maxPredictions; i++) {
-                const classPrediction = `${prediction[i].className}: ${prediction[i].probability.toFixed(2)}`;
-                labelContainer.childNodes[i].innerHTML = classPrediction;
-            }
-        }
+       async function predict() {
+    const prediction = await model.predict(webcam.canvas);
+    for (let i = 0; i < maxPredictions; i++) {
+        const classPrediction = `${prediction[i].className}: ${prediction[i].probability.toFixed(2)}`;
+        labelContainer.childNodes[i].innerHTML = classPrediction;
+    }
+
+    // Kirim hasil klasifikasi ke MIT App Inventor melalui WebViewString
+    if (window.AppInventor) {
+        window.AppInventor.setWebViewString(prediction[0].className);
+    }
+}
+
     </script>
 </body>
 </html>
